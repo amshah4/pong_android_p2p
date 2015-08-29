@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Ankoor Shah
+ * p2p pong, GameModeActivity Class
+ * Launched to handle chosen game mode. Launches other needed activities,
+ * depending on game mode, such as connection in 2 player mode.
+ *
+ *
+ * COMMENTS ARE LEFT UNTOUCHED.
+ ****************************************************************************/
 package com.nick.aponggame;
 
 
@@ -99,12 +108,16 @@ public class GameModeActivity extends Activity
                 }
             }
     	}
+
+
+        return;
     }
     
     @Override
     protected void onPause()
     {
     	super.onPause();
+        return;
     }
     
     @Override
@@ -115,8 +128,14 @@ public class GameModeActivity extends Activity
         {
 	        // Stop the Bluetooth chat services
 	        if (btServer != null) btServer.stop();
-	        if(D) Log.e(TAG, "--- ON DESTROY ---");
+	        if(D)
+            {
+                Log.e(TAG, "--- ON DESTROY ---");
+            }
         }
+
+
+        return;
     }
     
     @Override
@@ -143,6 +162,10 @@ public class GameModeActivity extends Activity
 	        {
 	        	setup2pGame();//handles all the games that use 2p
 	        }
+            else
+            {
+                //do nothing
+            }
         }//else handle any 1p game mode, if we make any
         
         
@@ -152,7 +175,10 @@ public class GameModeActivity extends Activity
     
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(D) Log.d(TAG, "onActivityResult " + resultCode);
+        if(D)
+        {
+            Log.d(TAG, "onActivityResult " + resultCode);
+        }
         
         
         switch (requestCode)
@@ -167,7 +193,10 @@ public class GameModeActivity extends Activity
 	                // Attempt to connect to the device
 	                btServer.connect(device);
 	            }
+
+
 	            break;
+
 	        case REQUEST_ENABLE_BT:	// When the request to enable Bluetooth returns
 	            if (resultCode == Activity.RESULT_OK)
 	            {
@@ -181,7 +210,14 @@ public class GameModeActivity extends Activity
 	                Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
 	                finish();
 	            }
+
+
+                break;
+            default: break;
         }
+
+
+        return;
     }
     
     
@@ -205,8 +241,11 @@ public class GameModeActivity extends Activity
     	   Intent serverIntent = new Intent(this, DeviceList.class);
     	   startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
            //Wait for successful connect!
+       }//else if/else, any other game 2p game mode, if we make any
+       else
+       {
+           //do nothing
        }
-       //else if/else, any other game 2p game mode, if we make any
        
        
        return;
@@ -232,10 +271,14 @@ public class GameModeActivity extends Activity
 	                		startGame();
 	                	}
 	                }
+
+
 	                break;
+
 	            case MESSAGE_WRITE:
 	            	System.out.println("Message written!");		//essentially do nothing
 	                break;
+
 	            case MESSAGE_READ:
 	                String[] split=(new String((byte[]) msg.obj, 0, msg.arg1)).split(" ");	//split up string form of byte data
 	                if(split.length==4)
@@ -250,18 +293,31 @@ public class GameModeActivity extends Activity
 	                {
 	                	view.scoreSync(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
 	                }
+                    else
+                    {
+                        //do nothing
+                    }
+
+
 	                break;
+
 	            case MESSAGE_DEVICE_NAME:
 	                // save the connected device's name
 	                mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
 	                Toast.makeText(getApplicationContext(), "Connected to "
 	                               + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
 	                break;
+
 	            case MESSAGE_TOAST:
 	                Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
 	                               Toast.LENGTH_SHORT).show();
 	                break;
+
+                default: break;
             }
+
+
+            return;
         }
     };
     
@@ -286,6 +342,9 @@ public class GameModeActivity extends Activity
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
             startActivity(discoverableIntent);
         }
+
+
+        return;
     }
     
     
@@ -297,21 +356,35 @@ public class GameModeActivity extends Activity
     }
     
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.quit:
-        	finish();
-        	return true;
-        case R.id.scan:
-            // Launch the DeviceListActivity to see devices and do scan
-            Intent serverIntent = new Intent(this, DeviceList.class);
-            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
-            return true;
-        case R.id.discoverable:
-            // Ensure this device is discoverable by others
-            ensureDiscoverable();
-            return true;
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        boolean rv=false;
+        switch (item.getItemId())
+        {
+            case R.id.quit:
+                finish();
+                rv=true;
+                break;
+
+            case R.id.scan:
+                // Launch the DeviceListActivity to see devices and do scan
+                Intent serverIntent = new Intent(this, DeviceList.class);
+                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+
+
+                rv=true;
+                break;
+
+            case R.id.discoverable:
+                // Ensure this device is discoverable by others
+                ensureDiscoverable();
+                rv=true;
+                break;
+
+            default: break;
         }
-        return false;
+
+
+        return rv;
     }
 }

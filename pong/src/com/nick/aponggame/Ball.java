@@ -1,3 +1,10 @@
+/*****************************************************************************
+ * Ankoor Shah
+ * p2p pong, Ball Class
+ * Represents the ball object that will be jumping between the devices.
+ ****************************************************************************/
+
+
 package com.nick.aponggame;
 
 public class Ball
@@ -19,7 +26,25 @@ public class Ball
 		yVel=yv;
 		size=s;
 	}
-	
+
+
+    /**
+     * Reverses appropriate axis. For example, when ball hits wall, or crosses
+     * over to peer.
+     */
+    public void reverseX()
+    {
+        xVel=-xVel;
+        return;
+    }
+    public void reverseY()
+    {
+        yVel=-yVel;
+        return;
+    }
+
+
+    //GETTERS/SETTERS
 	public int getX()
 	{
 		return xPos;
@@ -36,16 +61,6 @@ public class Ball
 	public void setY(int y)
 	{
 		yPos=y;
-		return;
-	}
-	public void reverseX()
-	{
-		xVel=-xVel;
-		return;
-	}
-	public void reverseY()
-	{
-		yVel=-yVel;
 		return;
 	}
 	public int getSize()

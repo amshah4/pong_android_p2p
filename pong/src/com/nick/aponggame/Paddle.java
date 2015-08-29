@@ -1,3 +1,8 @@
+/*****************************************************************************
+ * Ankoor Shah
+ * p2p pong, Paddle Class
+ * Represents paddle object used to strike ball back.
+ ****************************************************************************/
 package com.nick.aponggame;
 
 public class Paddle
@@ -14,6 +19,9 @@ public class Paddle
 		length=len;
 		height=h;
 	}
+
+
+    //GETTERS/SETTERS
 	public int getX()
 	{
 		return xPos;

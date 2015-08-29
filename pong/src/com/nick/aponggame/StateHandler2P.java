@@ -1,3 +1,8 @@
+/*****************************************************************************
+ * Ankoor Shah
+ * p2p pong, StateHandler2P Class
+ * Game Model for 2 player mode.
+ ****************************************************************************/
 package com.nick.aponggame;
 
 import java.util.ArrayList;
@@ -21,7 +26,8 @@ public class StateHandler2P extends SurfaceView implements 	SurfaceHolder.Callba
 	private int scoreP2;
 	private int winningScore;
 	private boolean multiball;
-	public class SynchArray{
+	public class SynchArray
+    {
 		private ArrayList<Ball> list=new ArrayList<Ball>();
 		public synchronized void add(Ball b){
 			list.add(b);
@@ -36,7 +42,8 @@ public class StateHandler2P extends SurfaceView implements 	SurfaceHolder.Callba
 			return list.size();
 		}
 	}
-	public class Synchint{
+	public class Synchint
+    {
 		private int total=0;
 		public synchronized void add(){
 			total++;
@@ -80,7 +87,7 @@ public class StateHandler2P extends SurfaceView implements 	SurfaceHolder.Callba
    		{
 	   		balls.add(new Ball(155, 10, (int)(Math.random()*3)+3, (int)(Math.random()*3)+3, 10));//always starts on p1 screen [for now?]
    		}
-		multiball=mult;
+		multiball=mult; //depreciated?
 		
 	   	
 	   	return;
@@ -89,7 +96,8 @@ public class StateHandler2P extends SurfaceView implements 	SurfaceHolder.Callba
 	//used by run
 	public void update()//later change to return int reflecting who scored, if anyone
 	{
-		if(isPlayer1 && totalBalls.get()==0){
+		if(isPlayer1 && totalBalls.get()==0)
+        {
 			balls.add(new Ball(getWidth()/2 - 5, getHeight()/5, (int)(Math.random()*3)+3, (int)(Math.random()*3)+3, 10));
 			totalBalls.add();
 		}
@@ -102,7 +110,8 @@ public class StateHandler2P extends SurfaceView implements 	SurfaceHolder.Callba
 			if(b.getY() > getHeight())
 			{//Collisions with the bottom wall
 				String message;
-				if(totalBalls.get()==1 && isPlayer1){
+				if(totalBalls.get()==1 && isPlayer1)
+                {
 					b.setX(getWidth()/2-b.getSize()/2);
 					b.setY(getHeight()/5);
 					b.setXV((int)(Math.random()*3)+3);//make random velocity
@@ -150,29 +159,32 @@ public class StateHandler2P extends SurfaceView implements 	SurfaceHolder.Callba
 				
 						b.getY()+b.getSize() >= paddle.getY() &&
 						b.getY()+b.getSize()-b.getYV() <= paddle.getY() /*&& b.getYV()>0 is implied*/)
-			{//if within paddle's x positions, and was above paddle before move, and is now below paddle, collission with paddle
-			 //NOTE: this method is somewhat complicated to fix for the case that b.getYV()>paddle.getHeight()
-				b.reverseY();
-				if(multiball)
-				{
-					String message;
-					balls.add(new Ball(b.getX(), paddle.getY()+paddle.getHeight()-1, (int)(Math.random()*3)+3, (-1)*((int)(Math.random()*3)+3), 10));
-					if(isPlayer1) totalBalls.add();
-					
-					if(isPlayer1)
-					{
-						message=scoreP2+" ";
-					}
-					else
-					{
-						message=scoreP1+" ";
-					}
-					message+=1+" ";
-					
-					
-					server.write(message.getBytes());
-				}
-			}
+            {//if within paddle's x positions, and was above paddle before move, and is now below paddle, collission with paddle
+                //NOTE: this method is somewhat complicated to fix for the case that b.getYV()>paddle.getHeight()
+                b.reverseY();
+                if (multiball)
+                {
+                    String message;
+                    balls.add(new Ball(b.getX(), paddle.getY() + paddle.getHeight() - 1, (int) (Math.random() * 3) + 3, (-1) * ((int) (Math.random() * 3) + 3), 10));
+                    if (isPlayer1)
+                    {
+                        totalBalls.add();
+                    }
+
+                    if (isPlayer1)
+                    {
+                        message = scoreP2 + " ";
+                    }
+                    else
+                    {
+                        message = scoreP1 + " ";
+                    }
+                    message += 1 + " ";
+
+
+                    server.write(message.getBytes());
+                }
+            }
 		}
 		
 		
@@ -206,10 +218,13 @@ public class StateHandler2P extends SurfaceView implements 	SurfaceHolder.Callba
 		paint.setColor(Color.YELLOW);
 		paint.setTextSize(20);
 		int you, them;
-		if(isPlayer1){
+		if(isPlayer1)
+        {
 			you=scoreP1;
 			them=scoreP2;
-		} else{
+		}
+        else
+        {
 			you=scoreP2;
 			them=scoreP1;
 		}
@@ -262,10 +277,13 @@ public class StateHandler2P extends SurfaceView implements 	SurfaceHolder.Callba
 		else if(scoreP1>=winningScore || scoreP2>=winningScore) canvas.drawText("You lost. ):", getWidth()/2-120, getHeight()/2, paint);
 		holder.unlockCanvasAndPost(canvas);
 		String message;
-		try{
+		try
+        {
 			Thread.sleep(500);
-		} catch(Exception e){
-			
+		}
+        catch(Exception e)
+        {
+			//do nothing
 		}
 		if(isPlayer1)
 		{
@@ -303,11 +321,17 @@ public class StateHandler2P extends SurfaceView implements 	SurfaceHolder.Callba
 	{
 		if(isPlayer1)
 		{
-			if(scoreP1<winningScore) scoreP1=newScore;
+			if(scoreP1<winningScore)
+            {
+                scoreP1=newScore;
+            }
 		}
 		else
 		{
-			if(scoreP2<winningScore) scoreP2=newScore;
+			if(scoreP2<winningScore)
+            {
+                scoreP2=newScore;
+            }
 		}
 		
 		if(isPlayer1 && numBalls<0) totalBalls.sub();

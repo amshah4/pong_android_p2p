@@ -1,3 +1,11 @@
+/*****************************************************************************
+ * Ankoor Shah
+ * p2p pong, MainActivity Class
+ * Class for application management, handling events such as launch, closed,
+ * minimized/paused, resumed, etc.
+ *
+ * COMMENTS ARE LEFT UNTOUCHED.
+ ****************************************************************************/
 package com.nick.aponggame;
 
 import android.os.Bundle;
@@ -16,6 +24,7 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        return;
     }
 
     @Override
@@ -30,6 +39,7 @@ public class MainActivity extends Activity
     	Intent intent=new Intent(this, GameModeActivity.class);
     	intent.putExtra(GAME_MODE, "2p0");//type of game this button represented
     	startActivity(intent);
+        return;
     }
     
     public void button1Clicked(View current)
@@ -37,6 +47,7 @@ public class MainActivity extends Activity
     	Intent intent=new Intent(this, GameModeActivity.class);
     	intent.putExtra(GAME_MODE, "2p1");//type of game this button represented
     	startActivity(intent);
+        return;
     }
     
     /*
